@@ -67,7 +67,7 @@ Here is a complete example ployfile:
         REDIS_SERVER: 'localhost'
 ```
 
-ployd.conf is located in /etc - here is the /etc/ployd.conf in one.myproject.com
+`ployd.conf` is located in `/etc` - here is the `/etc/ployd.conf` for `one.myproject.com`
 
 ```coffeescript
 tags: ["one.myproject.com", "one", "myproject-servers"]
