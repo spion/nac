@@ -23,8 +23,9 @@ env:
 Add the ployfile to git, clone the project on your server and run
 the command
 
-    ploy add ployfile.cson
-    ploy start myproject 
+    # ploy add ployfile.cson
+    Added myproject
+    # ploy start myproject 
 
 # other configuration options
 
