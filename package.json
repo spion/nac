@@ -1,7 +1,7 @@
 {
   "name": "ploy",
   "version": "0.0.0",
-  "description": "A simple process / app control and monitoring daemon written in node",
+  "description": "A simple process / app control and monitoring daemon",
   "main": "index.js",
   "scripts": {
     "test": "tap test/index.js"

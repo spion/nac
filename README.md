@@ -1,9 +1,8 @@
 # ploy
 
-ploy is a simple app control and monitoring tool written
-in node. 
+ploy is a simple process / app control and monitoring daemon written in node
 
-ploy is also multi-server-aware which allows you to use
+ploy is multi-server-aware which allows you to use
 it with parallel control tools such as [pssh](http://www.theether.org/pssh/),
 [cssh](http://sourceforge.net/projects/clusterssh/),
 [fabric](http://docs.fabfile.org/en/1.6/), or, in the future,
