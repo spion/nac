@@ -1,16 +1,16 @@
-# ploy
+# nac
 
-ploy is a simple process / app control and monitoring daemon written in node
+nac is a simple app control and monitoring daemon written in node
 
-ploy is multi-server-aware which allows you to use
+nac is multi-server-aware which allows you to use
 it with parallel control tools such as [pssh](http://www.theether.org/pssh/),
 [cssh](http://sourceforge.net/projects/clusterssh/),
 [fabric](http://docs.fabfile.org/en/1.6/), or, in the future,
-**rploy**
+**rnac**
 
 # how it works
 
-Write a ployfile for your project. The syntax is [CSON](https://github.com/bevry/cson),
+Write a nacfile for your project. The syntax is [CSON](https://github.com/bevry/cson),
 which is similar to JSON.
 
 ```coffeescript
@@ -21,28 +21,28 @@ env:
   PORT: 5000
 ```
 
-Add the ployfile to git, clone the project on your server and run
+Add the nacfile to git, clone the project on your server and run
 the command
 
-    # ploy add ployfile.cson
+    # nac add nacfile.cson
     Added myproject
-    # ploy start myproject 
+    # nac start myproject 
 
 # other configuration options
 
-There are two types of configuration files in ploy:
+There are two types of configuration files in nac:
 
-* project configuration (ployfile)
-* server daemon configuration (ployd.conf)
+* project configuration (nacfile)
+* server daemon configuration (nacd.conf)
 
-Here is a complete example ployfile:
+Here is a complete example nacfile:
 
 ```coffeescript
 
   name: "myproject"
   # command to execute. It doesn't have to be a JS file
   command: "myproject-cluster.js"
-  # working dir relative to the ployfile
+  # working dir relative to the nacfile
   cwd: "."
 
   # extra arguments to add
@@ -64,7 +64,7 @@ Here is a complete example ployfile:
   # you can add additional scripts which will become available
   # as commands for the specific project
   scripts: 
-    deploy: "scripts/deploy.sh",
+    denac: "scripts/denac.sh",
     report: "scripts/statusReport.sh"
 
   # override options on a per-server-tag basis
@@ -74,16 +74,16 @@ Here is a complete example ployfile:
         REDIS_SERVER: 'one.myproject.com'
     "one.myproject.com":
       env: 
-        # even though ploy doesnt handle clustering, it
+        # even though nac doesnt handle clustering, it
         # can pass clustering configuration via env and args 
         # on a per-server basis
         workers: 6,
         REDIS_SERVER: 'localhost'
 ```
 
-`ployd.conf` is located in `/etc`. 
+`nacd.conf` is located in `/etc`. 
 
-Example `/etc/ployd.conf` for `one.myproject.com`:
+Example `/etc/nacd.conf` for `one.myproject.com`:
 
 ```coffeescript
 tags: ["one.myproject.com", "one", "myproject-servers"]
@@ -96,50 +96,50 @@ specified config overrides for that tag
 
 #### create
 
-    ploy add ployfile.cson
+    nac add nacfile.cson
 
-Adds the specified ployfile to the daemon.
+Adds the specified nacfile to the daemon.
 
-The name specified in ployfile.cson must be unique for that server
+The name specified in nacfile.cson must be unique for that server
 and user. If the user already has an app running under that name, on
-that server, ploy will complain
+that server, nac will complain
 
 The next commands will assume that `name = myproject`
 
 #### start, stop, restart
 
-    ploy [start|stop|restart] myproject
+    nac [start|stop|restart] myproject
 
 Start/stop/restart the app `myproject` using the command, 
 arguments and environment variables specified in the config file. 
 
 #### kill
 
-    ploy kill myproject <SIGNAL>
+    nac kill myproject <SIGNAL>
 
 Send the specified named signal to the app's process. Useful for
 user-defined signals such as cluster reloading
 
 #### remove 
 
-    ploy remove myproject
+    nac remove myproject
 
-Will remove the project and its ployfile from the daemon and stop
+Will remove the project and its nacfile from the daemon and stop
 the app process
 
 #### update
 
-    ploy update <myproject|configpath>
+    nac update <myproject|configpath>
 
-Will update the configuration file. If you omit the path, `ployd`
+Will update the configuration file. If you omit the path, `nacd`
 will attempt to reload the configuration file from the same location
 as previously specified. If you omit the project name instead,
-`ployd` will read the name from the config file, update the apps's
+`nacd` will read the name from the config file, update the apps's
 configuration and update the location of the config file for that app
 
 #### log
 
-    ploy log myproject
+    nac log myproject
 
 Show stdout/stderr logs for the project. Logs will be displayed in the format
 
@@ -155,18 +155,18 @@ Arguments:
 
 ### run
 
-    ploy run myproject <script> [args]
+    nac run myproject <script> [args]
 
 Run one of the scripts for the project with the specified arguments. Will
 display the output of the script.
 
 # environment variables
 
-When running the app or its custom script, `ploy` sets the following environment
+When running the app or its custom script, `nac` sets the following environment
 variables:
 
-* PLOYFILE - full path to the ployfile 
-* PLOYDIR  - absolute working directory of the app
+* NACFILE - full path to the nacfile 
+* NACDIR  - absolute working directory of the app
 
 # licence
 
