@@ -42,7 +42,7 @@ stop commands are preserved across daemon restarts.
 
 * Table: logs (?)
   * appId - application id
-  * type - stdin | stdout | start | stop | etc
+  * event - stderr | stdout | start | stop | etc
   * timestamp - date logged
   * text - logged text
 
