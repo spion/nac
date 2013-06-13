@@ -64,7 +64,7 @@ Here is a complete example nacfile:
   # you can add additional scripts which will become available
   # as commands for the specific project
   scripts: 
-    denac: "scripts/denac.sh",
+    deploy: "scripts/deploy.sh",
     report: "scripts/statusReport.sh"
 
   # override options on a per-server-tag basis
