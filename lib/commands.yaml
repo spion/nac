@@ -21,8 +21,13 @@ start:
 status:
   desc  : check the status of the app
   more  : |
-          Check the status of the specified app. Output includes the columns
-          name, active, uptime, pid, nacfile
+          Check the status of the specified app. Output includes the columns:
+
+          * name - name of the app
+          * active - yes if the app should be active, no if not.
+          * uptime - the current process uptime or '-' if no process active
+          * pid - the pid of the current (or last) process
+          * nacfile - the config file used by this app
 
 stop:
   desc  : stop the app
