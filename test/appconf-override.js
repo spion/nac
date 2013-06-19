@@ -1,4 +1,4 @@
-var acoverride = require('../lib/daemon/appconf-override');
+var acoverride = require('../lib/appconf-override');
 var t = require('tap');
 
 

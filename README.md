@@ -9,38 +9,37 @@ tools such as [pssh](http://www.theether.org/pssh/),
 
 # how it works
 
-Write a nacfile for your project. The syntax is 
+Write a nacfile for your app. The syntax is 
 [YAML](http://en.wikipedia.org/wiki/YAML)
 
 ```yaml
-command: myproject.js
+command: myapp.js
 env: 
   NODE_ENV: production
   PORT: 5000
 ```
 
-Add the nacfile to git, clone the project on your server and run the command
+Add the nacfile to git, clone the app on your server and run the command
 
-    # nac add myproject ~/projects/myproject/nacfile.yaml
-    Added myproject (~/projects/myproject/nacfile.yaml)
-    # nac start myproject 
+    # nac add myapp ~/projects/myapp/nacfile.yaml
+    Added myapp (~/projects/myapp/nacfile.yaml)
+    # nac start myapp 
 
 # other configuration options
 
 There are two types of configuration files in nac:
 
-* project configuration (nacfile)
-* server daemon configuration (nacd.conf)
-
+* app configuration (nacfile)
+* server daemon configuration (nacd.yaml)
 
 ### nacfile
 
 Here is a complete example nacfile:
 
 ```yaml
-name: myproject
+name: myapp
 # command to execute. It doesn't have to be a JS file
-command: myproject-cluster.js
+command: myapp-cluster.js
 # working dir relative to the nacfile
 cwd: .
 
@@ -70,10 +69,10 @@ scripts:
 
 # override options on a per-server-tag basis
 servers: 
-  two.myproject.com: 
+  two.myapp.com: 
     env: 
-      REDIS_SERVER: one.myproject.com
-  one.myproject.com:
+      REDIS_SERVER: one.myapp.com
+  one.myapp.com:
     env: 
       # even though nac doesnt handle clustering, it
       # can pass clustering configuration via env or args 
@@ -82,60 +81,57 @@ servers:
       REDIS_SERVER: localhost
 ```
 
-### nacd.conf
+### nacd.yaml
 
 Located in `/etc`, it contains global configuration of the nac daemon.
 
-Example `/etc/nacd.conf` for the first server:
+Example `/etc/nacd.yaml` for the first server:
 
 ```yaml
 tags: 
-    - one.myproject.com
+    - one.myapp.com
     - one
-    - myproject-servers
+    - myapp-servers
 ```
 
-Since this server has the tag "one.myproject.com", it will apply the specified 
+Since this server has the tag "one.myapp.com", it will apply the specified 
 config overrides for that tag
 
 # available commands
 
 #### create
 
-    nac add nacfile.yaml
+    nac create myapp nacfile.yaml
 
-Adds the specified nacfile to the daemon.
+Adds the specified app with its nacfile to the daemon.
 
-The name specified in nacfile.yaml must be unique for that server and user. If 
-the user already has an app running under that name, on that server, nac will 
-complain
-
-The next commands will assume that `name = myproject`
+The name specified must be unique for that server and user. If the user already
+has an app running under that name, on that server, nac will complain.
 
 #### start, stop, restart
 
-    nac [start|stop|restart] myproject
+    nac [start|stop|restart] myapp
 
-Start/stop/restart the app `myproject` using the command, arguments and 
+Start/stop/restart the app `myapp` using the command, arguments and 
 environment variables specified in the config file. 
 
 #### kill
 
-    nac kill myproject <SIGNAL>
+    nac kill myapp <SIGNAL>
 
 Send the specified named signal to the app's process. Useful for user-defined 
 signals such as cluster reloading
 
 #### remove 
 
-    nac remove myproject
+    nac remove myapp
 
 Will remove the project and its nacfile from the daemon and stop the app 
 process
 
 #### update
 
-    nac update <myproject> [configpath]
+    nac update <myapp> [configpath]
 
 Will update the configuration file. If you omit the path, `nacd` will attempt 
 to reload the configuration file from the same location as previously 
@@ -144,7 +140,7 @@ configuration and update the location of the config file for that app
 
 #### log
 
-    nac log myproject
+    nac log myapp
 
 Show stdout/stderr logs for the project. Logs will be displayed in the format
 
@@ -157,12 +153,10 @@ Arguments:
 * --last <N> - show last N lines in log (default 100)
 * --past <time> - show just the past days/hours/minutes/seconds e.g. --past 2m
 * --duration <time> - show the specified diration (--past required)
-* --from <date> - alternative to --past 
-* --to <date> - alternative to --duration (--from required)
 
 ### run
 
-    nac run myproject <script> [args]
+    nac run myapp <script> [args]
 
 Run one of the scripts for the project with the specified arguments. Will
 display the output of the script.
@@ -174,7 +168,7 @@ environment variables:
 
 * NACFILE - full path to the nacfile 
 * NACDIR  - absolute working directory of the app
-* NACNAME - the name of the app (e.g. myproject)
+* NACNAME - the name of the app (e.g. myapp)
 
 # licence
 
