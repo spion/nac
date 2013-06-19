@@ -91,6 +91,10 @@ logs:
 run:
   desc  : run a script specified in the nacfile
   usage : '[script] [arguments] ...'
+  more  : |
+          Run one of the scripts specified in the nacfile. Any arguments
+          specified will be passed to the script. The output of the script will
+          be displayed (sent to stdout).
 
 help:
   desc  : show general or command-specific help for nac
