@@ -117,34 +117,34 @@ environment variables specified in the config file.
 
 #### kill
 
-    nac kill myapp <SIGNAL>
+    nac myapp kill <signal>
 
 Send the specified named signal to the app's process. Useful for user-defined 
 signals such as cluster reloading
 
-#### remove 
+#### destroy
 
-    nac remove myapp
+    nac myapp destroy
 
 Will remove the project and its nacfile from the daemon and stop the app 
 process
 
 #### update
 
-    nac update <myapp> [configpath]
+    nac myapp update [configpath]
 
 Will update the configuration file. If you omit the path, `nacd` will attempt 
 to reload the configuration file from the same location as previously 
 specified. If you specify the config path, `nacd` will update the apps's 
 configuration and update the location of the config file for that app
 
-#### log
+#### logs
 
-    nac log myapp
+    nac myapp logs
 
 Show stdout/stderr logs for the project. Logs will be displayed in the format
 
-[iso-date] [stdout|stderr]: content
+[date] [time] [stdout|stderr]: content
 
 Arguments:
 
@@ -155,7 +155,7 @@ Arguments:
 
 ### run
 
-    nac run myapp <script> [args]
+    nac myapp run script [args]
 
 Run one of the scripts for the project with the specified arguments. Will
 display the output of the script.
