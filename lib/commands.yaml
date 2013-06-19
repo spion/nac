@@ -1,0 +1,100 @@
+create:
+  desc  : add an app to control and monitor
+  usage : <path/to/nacfile>
+  more  : |
+          Adds the specified app with its nacfile to the daemon.
+
+          The name specified must be unique for that server and user. If the
+          user already has an app running under that name, on that server, nac
+          will complain.
+
+start:
+  desc  : start the app
+  more  : |
+          Start the specified app using the command, arguments and environment
+          variables specified in the config file. If the app fails to start,
+          nacd will keep trying to restart it.
+
+          nacd will remember the app's state and will restore all active apps
+          the next time its run
+
+status:
+  desc  : check the status of the app
+  more  : |
+          Check the status of the specified app. Output includes the columns
+          name, active, uptime, pid, nacfile
+
+stop:
+  desc  : stop the app
+  more  : |
+          Stop the specified app.
+
+          If the app process is not active, this will cause nacd to stop
+          restarting the app.
+
+          nacd will remember the app's state and skip running it the next time
+          its run
+
+restart:
+  desc  : restart the app
+  more  : |
+          Restart the specified app by sending it the SIGTERM signal.
+
+          If the app was not started, this command works just like start.
+
+kill:
+  desc  : send a signal to the app
+  usage : <signal>
+  more  : |
+          Send the specified named signal to the app's process. Useful for
+          user-defined signals such as cluster reloading, as well as forcing
+          a kill using SIGKILL
+
+destroy:
+  desc  : destroy (stop monitoring) the app
+  more  : |
+          Stops monitoring the specified app and removes it from the app list.
+
+update:
+  desc  : update the configuration file for the app
+  usage : [nacfile]
+  more  : |
+          Updates the app's configuration file.
+
+          If you omit the path, `nacd` will attempt to reload the configuration
+          file from the same location as previously specified. If you specify
+          the config path, `nacd` will update the apps's configuration and
+          update the location of the config file for that app
+
+logs:
+  desc  : read the application logs
+  usage : '[args]'
+  more  : |
+          Show logs for the project. nacd logs stdout and stderr as well as
+          various events.
+
+          Logs will be displayed in
+          the format <date> <time> <tag> <line> (tab-separated)
+
+
+          Available tags include
+          * events such as : start, stop, restart, respawn, update, exit
+          * process output : stdout, stderr
+          * script output  : script
+
+  args  :
+    tag      : <tag> - filter logs by the specified tag
+    last     : <N> - show last N lines (default 100)
+    past     : <duration> - show just the past X e.g. --past 2h30m
+    duration : <duration> - show the specified duration (--past required)
+
+run:
+  desc  : run a script specified in the nacfile
+  usage : '[script] [arguments] ...'
+
+help:
+  desc  : show general or command-specific help for nac
+  usage : '[command]'
+  more  : |
+          Displays the list of commands when invoked without arguments.
+          Otherwise it will display help for the specified command.

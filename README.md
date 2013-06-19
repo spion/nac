@@ -101,7 +101,7 @@ config overrides for that tag
 
 #### create
 
-    nac create myapp nacfile.yaml
+    nac myapp create nacfile.yaml
 
 Adds the specified app with its nacfile to the daemon.
 
@@ -110,7 +110,7 @@ has an app running under that name, on that server, nac will complain.
 
 #### start, stop, restart
 
-    nac [start|stop|restart] myapp
+    nac myapp [start|stop|restart]
 
 Start/stop/restart the app `myapp` using the command, arguments and 
 environment variables specified in the config file. 
@@ -148,8 +148,7 @@ Show stdout/stderr logs for the project. Logs will be displayed in the format
 
 Arguments:
 
-* --stdout - show just stdout
-* --stderr - show just stderr
+* --tag <tag> - show just stdout
 * --last <N> - show last N lines in log (default 100)
 * --past <time> - show just the past days/hours/minutes/seconds e.g. --past 2m
 * --duration <time> - show the specified diration (--past required)
