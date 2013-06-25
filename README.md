@@ -25,6 +25,10 @@ Add the nacfile to git, clone the app on your server and run the command
     Added myapp (~/projects/myapp/nacfile.yaml)
     # nac start myapp 
 
+Don't forget, the nac daemon must be running in the background as root:
+
+    sudo nacd --daemon
+
 # other configuration options
 
 There are two types of configuration files in nac:

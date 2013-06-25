@@ -11,6 +11,9 @@ var path = require('path');
 
 var LPATH = '/tmp/nacd/nacd.sock';
 
+if (process.argv.indexOf('--daemon')) 
+    require('daemon')();
+ 
 Daemon.create(function (err, daemon) {
     if (err) return console.log(err) || process.exit(1);
 
@@ -22,7 +25,7 @@ Daemon.create(function (err, daemon) {
 
     net.createServer(serveClient).listen(LPATH, function () {
         fs.chmodSync(LPATH, 0666);
-    });
+   });
 
     function serveClient(client) {
         usc.getCredentials(client, function (err, cred) {
