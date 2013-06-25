@@ -3,7 +3,7 @@
 var dnode = require('dnode'),
     net = require('net'),
     args = require('optimist')
-        .demand(2)
+        .demand(1)
         .usage('Usage: $0 <app> <command> [options]')
         .argv;
 
@@ -11,6 +11,11 @@ var help = require('../lib/help');
 
 var command = args._[1],
     params = [args._[0]].concat(args._.slice(2));
+
+if (params[0] == 'help') {
+    command = 'help';
+    params = ['-'].concat(args._.slice(1));
+}
 
 delete args['_'];
 if (Object.keys(args).length > 1)
@@ -55,4 +60,12 @@ var c = net.connect({path: '/tmp/nacd/nacd.sock'}, function () {
         remote[command].apply(remote, args);
     });
     c.pipe(d).pipe(c);
+});
+
+c.on('error', function(e) {
+    if (e.code == 'ENOENT')
+        console.error("Error connecting to the daemon socket.\n" +
+            "Is the daemon running?");
+    else
+        console.error('Error connecting to the daemon', e);
 });

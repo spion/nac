@@ -1,6 +1,6 @@
 create:
   desc  : add an app to control and monitor
-  usage : <path/to/nacfile>
+  usage : '<path/to/nacfile>'
   more  : |
           Adds the specified app with its nacfile to the daemon.
 
@@ -49,7 +49,7 @@ restart:
 
 kill:
   desc  : send a signal to the app
-  usage : <signal>
+  usage : '<signal>'
   more  : |
           Send the specified named signal to the app's process. Useful for
           user-defined signals such as cluster reloading, as well as forcing
@@ -62,7 +62,7 @@ destroy:
 
 update:
   desc  : update the configuration file for the app
-  usage : [nacfile]
+  usage : '[nacfile]'
   more  : |
           Updates the app's configuration file.
 
@@ -80,7 +80,6 @@ logs:
 
           Logs will be displayed in
           the format <date> <time> <tag> <line> (tab-separated)
-
 
           Available tags include
           * events such as : start, stop, restart, respawn, update, exit

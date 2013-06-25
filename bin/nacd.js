@@ -18,9 +18,10 @@ Daemon.create(function (err, daemon) {
         fs.unlinkSync(LPATH);
 
     mkdirp.sync(path.dirname(LPATH), 0755);
+    fs.chmodSync(path.dirname(LPATH), 0755);
 
     net.createServer(serveClient).listen(LPATH, function () {
-        fs.chmodSync(LPATH, 0755);
+        fs.chmodSync(LPATH, 0666);
     });
 
     function serveClient(client) {
