@@ -1,7 +1,7 @@
 {
   "name": "nac",
   "version": "0.1.10",
-  "description": "node app control and monitoring daemon",
+  "description": "node app control and monitoring daemon based on config files (somewhat similar to procfiles)",
   "main": "index.js",
   "bin": {
     "nacd": "bin/nacd.js",
@@ -21,7 +21,10 @@
     "deployment",
     "daemon",
     "service",
-    "forever"
+    "forever",
+    "config",
+    "procfile",
+    "procfiles"
   ],
   "author": "spion",
   "license": "MIT",
