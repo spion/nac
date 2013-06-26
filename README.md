@@ -173,7 +173,7 @@ environment variables:
 * NACDIR  - absolute working directory of the app
 * NACNAME - the name of the app (e.g. myapp)
 
-# licence
+# license
 
 MIT
 
