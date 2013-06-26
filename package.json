@@ -1,6 +1,6 @@
 {
   "name": "nac",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "node app control and monitoring daemon",
   "main": "index.js",
   "bin": {
