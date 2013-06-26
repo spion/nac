@@ -2,10 +2,24 @@
 
 nac is a simple app control and monitoring daemon written in node
 
+Unlike other process monitors, nac doesn't allow for random spawning and
+adding of processes. Instead, nac expects you to add "apps" defined by their 
+name and nacfile (procfile-like configuration files)
+
+The nacfile allows you to specify many other things about the process,
+such as arguments, environment variable configuration, working directory, 
+custom scripts etc. 
+
+nac remembers your apps and will restart them the next time its started.
+
 nac is multi-server-aware which allows you to use it with parallel control 
 tools such as [pssh](http://www.theether.org/pssh/),
 [cssh](http://sourceforge.net/projects/clusterssh/),
 [fabric](http://docs.fabfile.org/en/1.6/), or, in the future, **rnac**
+
+nac is also multi-user aware: a single daemon runs as root and all clients talk
+to it. Apps however are run are run under the uid of the user that added the
+application, and each user can only control his own apps.
 
 # how it works
 
