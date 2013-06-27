@@ -18,7 +18,7 @@ tools such as [pssh](http://www.theether.org/pssh/),
 [fabric](http://docs.fabfile.org/en/1.6/), or, in the future, **rnac**
 
 nac is also multi-user aware: a single daemon runs as root and all clients talk
-to it. Apps however are run are run under the uid of the user that added the
+to it. Apps however are run under the uid of the user that added the
 application, and each user can only control his own apps.
 
 # how it works
@@ -35,9 +35,9 @@ env:
 
 Add the nacfile to git, clone the app on your server and run the command
 
-    # nac add myapp ~/projects/myapp/nacfile.yaml
-    Added myapp (~/projects/myapp/nacfile.yaml)
-    # nac start myapp 
+    # nac myapp create ~/projects/myapp/nacfile.yaml
+    myapp created (/home/spion/projects/myapp/nacfile.yaml)
+    # nac myapp start
 
 Don't forget, the nac daemon must be running in the background as root:
 
@@ -56,7 +56,7 @@ Here is a complete example nacfile:
 
 ```yaml
 name: myapp
-# command to execute. It doesn't have to be a JS file
+# command to execute. It doesnt have to be a JS file
 command: myapp-cluster.js
 # working dir relative to the nacfile
 cwd: .
