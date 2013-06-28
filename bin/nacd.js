@@ -14,8 +14,10 @@ var LPATH = '/tmp/nacd/nacd.sock';
 if (~process.argv.indexOf('--daemon'))
     require('daemon')();
 
+
 Daemon.create(function (err, daemon) {
-    if (err) return console.log(err) || process.exit(1);
+
+    if (err) return console.error('', err.stack) || process.exit(1);
 
     if (fs.existsSync(LPATH))
         fs.unlinkSync(LPATH);
@@ -36,4 +38,6 @@ Daemon.create(function (err, daemon) {
     }
 
 });
+
+
 

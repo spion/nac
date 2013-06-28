@@ -26,6 +26,8 @@ if (Object.keys(args).length > 1)
 
 var parsers = require('../lib/client-parsers');
 
+var processors = require('../lib/client-processors');
+
 var hasError = help.check(command, params.length - 1);
 
 if (hasError) {
@@ -39,30 +41,39 @@ if (command == 'help') {
     process.exit(0);
 }
 
+if (processors[command])
+    params = processors[command](params);
+
+
 var c = net.connect({path: '/tmp/nacd/nacd.sock'}, function () {
     var d = dnode();
 
-    d.on('remote', function (remote) {
-        var args = params.concat([function callback(err, res) {
+    d.on('remote', onRemote);
+
+    function onRemote(remote) {
+        var cb = function callback(err, res) {
+            var okExit = process.exit.bind(process, 0);
             if (err) {
                 console.error("error:", err.message);
                 process.exit(1);
             } else {
                 if (parsers[command])
-                    parsers[command](res, process.exit.bind(process, 0), params);
+                    parsers[command](res, okExit, params);
                 else {
                     console.log(res);
-                    process.exit(0);
+                    okExit();
                 }
 
             }
-        }]);
+        };
+        var args = params.concat([cb]);
         remote[command].apply(remote, args);
-    });
+    }
+
     c.pipe(d).pipe(c);
 });
 
-c.on('error', function(e) {
+c.on('error', function (e) {
     if (e.code == 'ENOENT')
         console.error("Error connecting to the daemon socket.\n" +
             "Is the daemon running?");
