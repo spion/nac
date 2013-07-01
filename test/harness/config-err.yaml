@@ -1,0 +1,3 @@
+command: './process.js'
+args:
+    die: 1
