@@ -191,3 +191,4 @@ environment variables:
 
 MIT
 
+![Bitdeli](https://d2weczhvl823v0.cloudfront.net/spion/triplie-ng/trend.png)
