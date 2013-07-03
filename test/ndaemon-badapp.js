@@ -33,9 +33,9 @@ module.exports = function(t) {
                     t.end();
                 })
             });
-            dt.test('started app cannot be started twice', function(t) {
+            dt.test('started bad app can be started twice', function(t) {
                 c.start('test-bad', function(err, apps) {
-                    t.ok(err, 'app start error: ' + err);
+                    t.notOk(err, 'app start error: ' + err);
                     t.end();
                 });
             })
