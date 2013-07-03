@@ -1,6 +1,6 @@
 {
   "name": "nac",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "node app control and monitoring daemon based on config files (somewhat similar to procfiles)",
   "main": "index.js",
   "bin": {
