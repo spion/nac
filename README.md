@@ -23,25 +23,43 @@ application, and each user can only control his own apps.
 
 # how it works
 
+
+Run the nac daemon as root. There is no need for concern - it will run apps 
+under the priviledges of the user that added them (by setting the uid and gid).
+Users can only administer the apps they've added themselves.
+
+    sudo nacd --daemon
+
+
 Write a nacfile for your app. The syntax is 
-[YAML](http://en.wikipedia.org/wiki/YAML)
+[YAML](http://en.wikipedia.org/wiki/YAML) which is a superset of JSON.
 
 ```yaml
-command: myapp.js
+command: ./myapp.js
 env: 
   NODE_ENV: production
   PORT: 5000
 ```
+
+Don't forget to make `myapp.js` executable by adding a shebang line at the top of it
+
+```
+#!/usr/bin/env node
+```
+
+and then chmod it:
+
+```
+chmod +x myapp.js
+```
+
 
 Add the nacfile to git, clone the app on your server and run the command
 
     # nac myapp create ~/projects/myapp/nacfile.yaml
     myapp created (/home/spion/projects/myapp/nacfile.yaml)
     # nac myapp start
-
-Don't forget, the nac daemon must be running in the background as root:
-
-    sudo nacd --daemon
+    
 
 # other configuration options
 
@@ -57,7 +75,8 @@ Here is a complete example nacfile:
 ```yaml
 name: myapp
 # command to execute. It doesnt have to be a JS file
-command: myapp-cluster.js
+# However, it has to be executable.
+command: ./myapp-cluster.js
 # working dir relative to the nacfile
 cwd: .
 
