@@ -37,6 +37,16 @@ Daemon.create(function (err, daemon) {
         });
     }
 
+    function killWorkers() {
+        daemon.all().forEach(function(app) {
+            app.kill('SIGTERM', function() {});
+        });
+        process.exit();
+    }
+    process.on("uncaughtException", killWorkers);
+    process.on("SIGINT", killWorkers);
+    process.on("SIGTERM", killWorkers);
+
 });
 
 
