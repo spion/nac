@@ -41,7 +41,8 @@ env:
   PORT: 5000
 ```
 
-Don't forget to make `myapp.js` executable by adding a shebang line at the top of it
+Don't forget to make `myapp.js` executable by adding a shebang line at the top 
+of it
 
 ```
 #!/usr/bin/env node
@@ -80,7 +81,13 @@ command: ./myapp-cluster.js
 # working dir relative to the nacfile
 cwd: .
 
-# extra arguments to add
+# extra arguments to add: either an array
+args:
+  - first
+  - '--other'
+  - third
+# OR
+# alternatively you can pass a fancy object
 args: 
   # long arguments are automatically prefixed with --
   longarg: value
@@ -188,7 +195,7 @@ Arguments:
 * --tag <tag> - show just stdout
 * --last <N> - show last N lines in log (default 100)
 * --past <time> - show just the past days/hours/minutes/seconds e.g. --past 2m
-* --duration <time> - show the specified diration (--past required)
+* --duration <time> - show the specified duration (--past required)
 
 ### run
 
@@ -196,6 +203,13 @@ Arguments:
 
 Run one of the scripts for the project with the specified arguments. Will
 display the output of the script.
+
+### help
+
+    nac help [command]
+
+Display detailed help for the command. If the command is omitted, nac will
+print a list of commands.
 
 # environment variables
 
