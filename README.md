@@ -75,8 +75,8 @@ Here is a complete example nacfile:
 
 ```yaml
 name: myapp
-# command to execute. It doesnt have to be a JS file
-# However, it has to be executable.
+# command to execute. It doesnt have to be a JS file, however, it has to be 
+# executable.
 command: ./myapp-cluster.js
 # working dir relative to the nacfile
 cwd: .
@@ -105,11 +105,20 @@ env:
   NODE_ENV: production
   # clustering is best left to the app
 
-# you can add additional scripts which will become available
-# as commands for the specific project
+# you can add additional scripts which will become available as commands for 
+# the specific project
 scripts: 
-  deploy: scripts/deploy.sh
-  report: scripts/statusReport.sh
+  deploy: ./scripts/deploy.sh
+  report: ./scripts/statusReport.sh
+
+# if the app dies, nac will attempt to respawn it. the respawn setting 
+# controls the behavior of the respawner. The respawner will begin by
+# waiting respawn.min seconds before restarting the process, then if the 
+# process keeps dying it will exponentially backoff up to respawn.max seconds
+# on every respawn attempt.
+respawn:
+  min: 0.1
+  max: 30
 
 # override options on a per-server-tag basis
 servers: 
