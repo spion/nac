@@ -3,6 +3,7 @@
   "version": "0.1.23",
   "description": "node app control and monitoring daemon based on config files (somewhat similar to procfiles)",
   "main": "index.js",
+  "preferGlobal": "true",
   "bin": {
     "nacd": "bin/nacd.js",
     "nac": "bin/nac.js"
