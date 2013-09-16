@@ -17,50 +17,44 @@ tools such as [pssh](http://www.theether.org/pssh/),
 [cssh](http://sourceforge.net/projects/clusterssh/),
 [fabric](http://docs.fabfile.org/en/1.6/), or, in the future, **rnac**
 
-nac is also multi-user aware: a single daemon runs as root and all clients talk
-to it. Apps however are run under the uid of the user that added the
-application, and each user can only control his own apps.
+nac can optionally be multi-user aware: a single daemon can run as root and 
+all clients will talk to it. Apps however are run under the uid of the user 
+that added the application, and each user can only control his own apps.
 
-# how it works
+# quick start
 
+Run the nac daemon.
 
-Run the nac daemon as root. There is no need for concern - it will run apps 
-under the priviledges of the user that added them (by setting the uid and gid).
-Users can only administer the apps they've added themselves.
+    nacd --daemon
 
-    sudo nacd --daemon
-
-
-Write a nacfile for your app. The syntax is 
-[YAML](http://en.wikipedia.org/wiki/YAML) which is a superset of JSON.
+Create a simple [YAML](http://en.wikipedia.org/wiki/YAML) nacfile for your app 
+in the same directory where your `app.js` resides:
 
 ```yaml
-command: ./myapp.js
+command: node
+args: [app.js]
 env: 
   NODE_ENV: production
   PORT: 5000
 ```
 
-Don't forget to make `myapp.js` executable by adding a shebang line at the top 
-of it
+Add the nacfile to git, clone the app on your server and run the commands:
 
-```
-#!/usr/bin/env node
-```
-
-and then chmod it:
-
-```
-chmod +x myapp.js
-```
-
-
-Add the nacfile to git, clone the app on your server and run the command
-
-    # nac myapp create ~/projects/myapp/nacfile.yaml
+    $ nac myapp create ~/projects/myapp/nacfile.yaml
     myapp created (/home/spion/projects/myapp/nacfile.yaml)
-    # nac myapp start
+    $ nac myapp start
     
+
+# running as root
+
+You can alternatively run the daemon as root. There is no need for concern - it
+will run apps under the priviledges of the user that added them (by setting 
+the uid and gid). Users can only administer the apps they've added themselves.
+    
+    su root; nacd --daemon
+
+Warning: the root daemon will not read the apps that were added to existing
+user daemons. Users will need to re-add their apps.
 
 # other configuration options
 
@@ -75,8 +69,9 @@ Here is a complete example nacfile:
 
 ```yaml
 name: myapp
-# command to execute. It doesnt have to be a JS file, however, it has to be 
-# executable.
+# command to execute. It has to be executable: if using a JS file directly,
+# use chmod +x file.js first and add a shebang line at the top containing:
+# #!/usr/bin/env node 
 command: ./myapp-cluster.js
 # working dir relative to the nacfile
 cwd: .
@@ -87,6 +82,7 @@ args:
   - '--other'
   - third
 # OR
+
 # alternatively you can pass a fancy object
 args: 
   # long arguments are automatically prefixed with --

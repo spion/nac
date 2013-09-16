@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
 var Daemon = require('../lib/daemon/daemon');
+
+var userstore = require('../lib/db/userstore');
+
 var net = require('net');
 var dnode = require('dnode');
 var usc = require('unix-socket-credentials');
@@ -9,7 +12,11 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var path = require('path');
 
-var LPATH = '/tmp/nacd/nacd.sock';
+var LPATH = 
+    process.getuid() 
+        ? path.join(userstore('nac'), 'nacd.sock')
+        : '/tmp/nacd/nacd.sock'
+
 
 if (~process.argv.indexOf('--daemon'))
     require('daemon')();

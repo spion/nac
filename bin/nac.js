@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+var fs = require('fs');
+var path = require('path');
 var dnode = require('dnode'),
     net = require('net'),
     args = require('optimist')
@@ -8,6 +10,7 @@ var dnode = require('dnode'),
         .argv;
 
 var help = require('../lib/help');
+var userstore = require('../lib/db/userstore');
 
 var command = args._[1],
     params = [args._[0]].concat(args._.slice(2));
@@ -45,38 +48,46 @@ if (processors[command])
     params = processors[command](params);
 
 
-var c = net.connect({path: '/tmp/nacd/nacd.sock'}, function () {
-    var d = dnode();
-
-    d.on('remote', onRemote);
-
-    function onRemote(remote) {
-        var cb = function callback(err, res) {
-            var okExit = process.exit.bind(process, 0);
-            if (err) {
-                console.error("error:", err.message);
-                process.exit(1);
-            } else {
-                if (parsers[command])
-                    parsers[command](res, okExit, params);
-                else {
-                    console.log(res);
-                    okExit();
-                }
-
+function onRemote(remote) {
+    var cb = function callback(err, res) {
+        var okExit = process.exit.bind(process, 0);
+        if (err) {
+            console.error("error:", err.message);
+            process.exit(1);
+        } else {
+            if (parsers[command])
+                parsers[command](res, okExit, params);
+            else {
+                console.log(res);
+                okExit();
             }
-        };
-        var args = params.concat([cb]);
-        remote[command].apply(remote, args);
-    }
 
+        }
+    };
+    var args = params.concat([cb]);
+    remote[command].apply(remote, args);
+}
+
+function onConnected() {
+    var d = dnode();
+    d.on('remote', onRemote);
     c.pipe(d).pipe(c);
+}
+
+
+
+var sockPath = path.join(userstore('nac'), 'nacd.sock');
+
+var c = net.connect({path: sockPath}, onConnected);
+
+c.once('error', function(e) {
+    c = net.connect({path: '/tmp/nacd/nacd.sock'}, onConnected);
+    c.on('error', giveUp);
 });
 
-c.on('error', function (e) {
-    if (e.code == 'ENOENT')
-        console.error("Error connecting to the daemon socket.\n" +
-            "Is the daemon running?");
-    else
-        console.error('Error connecting to the daemon', e);
-});
+function giveUp(e) {
+    console.error("Error connecting to the daemon socket at:\n - %s\n - %s\n" +
+        "Is the daemon running?", sockPath, '/tmp/nacd/nacdsock');
+    console.error(e);
+}
+
