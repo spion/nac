@@ -53,7 +53,7 @@ the uid and gid). Users can only administer the apps they've added themselves.
     
     su root; nacd --daemon
 
-Warning: the root daemon will not read the apps that were added to existing
+**Warning!** The root daemon will not read the apps that were added to existing
 user daemons. Users will need to re-add their apps.
 
 # other configuration options
@@ -97,9 +97,9 @@ args:
 
 # environment variables
 env: 
-  workers: 4
   NODE_ENV: production
-  # clustering is best left to the app
+  # clustering is best left to the app, configuration is passed by env vars
+  workers: 4
 
 # you can add additional scripts which will become available as commands for 
 # the specific project
@@ -132,9 +132,11 @@ servers:
 
 ### nacd.yaml
 
-Located in `/etc`, it contains global configuration of the nac daemon.
+User-level nacd daemons can be configured by creating `~/.config/nac/nacd.yaml`
 
-Example `/etc/nacd.yaml` for the first server:
+A root-level nacd daemon is configured via `/etc/nacd.yaml`
+
+Example `nacd.yaml` for the first server:
 
 ```yaml
 tags: 
@@ -230,3 +232,4 @@ environment variables:
 MIT
 
 ![Bitdeli](https://d2weczhvl823v0.cloudfront.net/spion/triplie-ng/trend.png)
+
