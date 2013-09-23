@@ -51,7 +51,8 @@ You can alternatively run the daemon as root. There is no need for concern - it
 will run apps under the priviledges of the user that added them (by setting 
 the uid and gid). Users can only administer the apps they've added themselves.
     
-    su root; nacd --daemon
+    su root
+    nacd --daemon
 
 **Warning!** The root daemon will not read the apps that were added to existing
 user daemons. Users will need to re-add their apps.
