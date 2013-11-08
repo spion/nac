@@ -36,13 +36,18 @@ async.parallel([
     function(cb) { outlog.once('open', function() { cb(); }) },
 ], runDaemon);
 
+function clientError(e) {
+    var str = e ? (e.stack ? e.stack : e) : 'description not available';
+    console.error('Client socket/dnode error:', str);
+}
+
 function runDaemon() {
 
     if (~process.argv.indexOf('--daemon'))
         require('daemon')({
             stdout: outlog,
             stderr: errlog 
-        });
+        });    
 
     Daemon.create(function (err, daemon) {
 
@@ -59,9 +64,11 @@ function runDaemon() {
         });
 
         function serveClient(client) {
+            client.on('error', clientError);
             usc.getCredentials(client, function (err, cred) {
                 if (err) return console.log(err);
                 var d = dnode(Daemon.interface(cred.uid, daemon));
+                d.on('error', clientError);
                 client.pipe(d).pipe(client);
             });
         }
