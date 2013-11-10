@@ -21,6 +21,10 @@ nac can optionally be multi-user aware: a single daemon can run as root and
 all clients will talk to it. Apps however are run under the uid of the user 
 that added the application, and each user can only control his own apps.
 
+# install
+
+	npm install nac -g
+
 # quick start
 
 Run the nac daemon.
