@@ -69,7 +69,6 @@ There are two types of configuration files in nac:
 Here is a complete example nacfile:
 
 ```yaml
-name: myapp
 # command to execute. It has to be executable: if using a JS file directly,
 # use chmod +x file.js first and add a shebang line at the top containing:
 # #!/usr/bin/env node 
