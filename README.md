@@ -231,6 +231,11 @@ environment variables:
 * NACDIR  - absolute working directory of the app
 * NACNAME - the name of the app (e.g. myapp)
 
+# forever migration guide 
+
+For more info on replacing forever and using nac for deployment, read the 
+[forever migration guide](https://gist.github.com/spion/8b1f723b191b15c127f1)
+
 # license
 
 MIT
