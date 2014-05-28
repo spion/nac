@@ -73,14 +73,22 @@ function runDaemon() {
             });
         }
 
-        process.on("uncaughtException", killWorkers);
-        process.on("SIGINT", killWorkers);
-        process.on("SIGTERM", killWorkers);
+        process.on("uncaughtException", function(err) {
+            if (err && err.stack)
+                console.error("Uncaught:", err.stack);
+            else
+                console.error('Uncaught error: ' + err);
+            killWorkers();
+        });
+        process.on("SIGINT", function() {
+            console.error("\nGot SIGINT, shutting down");
+            killWorkers();
+        });
+        process.on("SIGTERM", function() {
+            console.log("\nGot SIGTERM, shutting down");
+            killWorkers();
+        });
         function killWorkers(err) {
-            if (err && err.stack) 
-                console.error(err.stack);
-            else 
-                console.error('Uncaught exception: ' + err);
             daemon.all().forEach(function(app) {
                 app.kill('SIGTERM', function() {});
             });
