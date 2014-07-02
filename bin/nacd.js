@@ -23,31 +23,40 @@ var LPATH = isRoot ? '/tmp/nacd/nacd.sock': nacpath('nacd.sock');
 var daemonConfig = require('../lib/daemon/config');
 
 var errlog = fs.createWriteStream(
-        (daemonConfig.stderr || isRoot ? '/var/log/nacd.err.log' 
-            : nacpath('nacd.err.log')), 
+        (daemonConfig.stderr || isRoot ? '/var/log/nacd.err.log'
+            : nacpath('nacd.err.log')),
             {flags:'a'}),
     outlog = fs.createWriteStream(
-        (daemonConfig.stdout || isRoot ? '/var/log/nacd.out.log' 
-            : nacpath('nacd.out.log')), 
+        (daemonConfig.stdout || isRoot ? '/var/log/nacd.out.log'
+            : nacpath('nacd.out.log')),
             {flags:'a'});
 
 async.parallel([
     function(cb) { errlog.once('open', function() { cb(); }) },
     function(cb) { outlog.once('open', function() { cb(); }) },
-], runDaemon);
+], checkAlreadyRunning);
 
 function clientError(e) {
     var str = e ? (e.stack ? e.stack : e) : 'description not available';
     console.error('Client socket/dnode error:', str);
 }
 
+function checkAlreadyRunning(e) {
+    if (e) return console.error(e);
+    net.connect({path: LPATH}, function() {
+        console.error("nacd: daemon is already running at", LPATH);
+        process.exit(1);
+    }).on('error', runDaemon);
+}
+
 function runDaemon() {
 
+    console.log("Listening on", LPATH);
     if (~process.argv.indexOf('--daemon'))
         require('daemon')({
             stdout: outlog,
-            stderr: errlog 
-        });    
+            stderr: errlog
+        });
 
     Daemon.create(function (err, daemon) {
 
@@ -56,9 +65,9 @@ function runDaemon() {
         if (fs.existsSync(LPATH))
             fs.unlinkSync(LPATH);
 
+
         mkdirp.sync(path.dirname(LPATH), 0755);
         fs.chmodSync(path.dirname(LPATH), 0755);
-
         net.createServer(serveClient).listen(LPATH, function () {
             fs.chmodSync(LPATH, 0666);
         });
@@ -97,4 +106,3 @@ function runDaemon() {
 
     });
 }
-

@@ -24,8 +24,6 @@ delete args['_'];
 if (Object.keys(args).length > 1)
     params.push(args);
 
-//console.log(command, params);
-
 
 var parsers = require('../lib/client-parsers');
 
@@ -68,22 +66,20 @@ function onRemote(remote) {
     remote[command].apply(remote, args);
 }
 
-function onConnected() {
-    var d = dnode();
-    d.on('remote', onRemote);
-    c.pipe(d).pipe(c);
-}
-
-
-
 var sockPath = path.join(userstore('nac'), 'nacd.sock');
-
 var c = net.connect({path: sockPath}, onConnected);
 
 c.once('error', function(e) {
     c = net.connect({path: '/tmp/nacd/nacd.sock'}, onConnected);
     c.on('error', giveUp);
 });
+
+function onConnected() {
+    var d = dnode();
+    d.on('remote', onRemote);
+    c.pipe(d).pipe(c);
+}
+
 
 function giveUp(e) {
     console.error("Error connecting to the daemon socket at:\n - %s\n - %s\n" +
